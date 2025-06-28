@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-// NOTE: All libraries (GSAP, ScrollTrigger, Lenis) are now loaded dynamically inside
-// the main App component's useEffect hook to prevent server-side execution errors.
-
 // --- CSS STYLES ---
+// All styles are now included directly here to avoid external file issues.
 const GlobalStyles = () => (
   <style>{`
     @tailwind base;
@@ -239,6 +237,7 @@ const Footer = ({ isReady }) => {
 
 
 // --- MAIN APP COMPONENT ---
+// FIXED: Removed Next.js specific 'Head' component and re-implemented dynamic library loading.
 export default function App() {
   const [libsReady, setLibsReady] = useState(false);
   
@@ -246,11 +245,10 @@ export default function App() {
     let lenis;
     const initLibs = async () => {
       try {
-        const [gsapModule, scrollTriggerModule, lenisModule] = await Promise.all([
-          import('https://esm.sh/gsap'),
-          import('https://esm.sh/gsap/ScrollTrigger'),
-          import('https://esm.sh/@studio-freight/lenis')
-        ]);
+        // Dynamically import libraries to ensure they only run on the client side
+        const gsapModule = await import('https://esm.sh/gsap');
+        const scrollTriggerModule = await import('https://esm.sh/gsap/ScrollTrigger');
+        const lenisModule = await import('https://esm.sh/@studio-freight/lenis');
         
         window.gsap = gsapModule.default;
         window.gsap.registerPlugin(scrollTriggerModule.ScrollTrigger);
@@ -269,7 +267,10 @@ export default function App() {
       }
     };
 
-    initLibs();
+    // This check ensures we don't try to run this code on the server
+    if (typeof window !== 'undefined') {
+        initLibs();
+    }
 
     return () => {
       if (lenis) lenis.destroy();
@@ -286,9 +287,13 @@ export default function App() {
       <GlobalStyles />
       <Cursor />
       <main>
-        <Hero isReady={libsReady} />
-        <WorkSection isReady={libsReady} />
-        <Footer isReady={libsReady} />
+        {libsReady && (
+            <>
+                <Hero isReady={libsReady} />
+                <WorkSection isReady={libsReady} />
+                <Footer isReady={libsReady} />
+            </>
+        )}
       </main>
     </>
   );
