@@ -126,7 +126,7 @@ const Hero = ({ isReady }) => {
   return (
     <section ref={heroSectionRef} className="h-screen bg-black text-white flex flex-col items-center justify-center overflow-hidden">
       <div className="text-center z-10 pointer-events-none">
-        <h1 ref={titleRef} className="text-6xl font-extrabold mb-4 tracking-tight">Hi, I'm Jateen</h1>
+        <h1 ref={titleRef} className="text-6xl font-extrabold mb-4 tracking-tight">Hi, I&apos;m Jateen</h1>
         <p ref={subtitleRef} className="text-xl text-gray-300">Crafting digital experiences with design + code</p>
       </div>
       <div ref={videoContainerRef} className="absolute w-[20vw] h-[20vh] rounded-lg overflow-hidden" style={{ maxWidth: '320px', maxHeight: '180px' }}>
@@ -144,7 +144,6 @@ const Hero = ({ isReady }) => {
 };
 
 // --- WORK SECTION COMPONENT ---
-// EDIT HERE: Replace these titles and image URLs with your own project details.
 const workData = [
     { title: "LuxeStay Hotel Booking", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80" },
     { title: "Quantum Analytics", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80" },
@@ -193,7 +192,13 @@ const WorkSection = ({ isReady }) => {
                     transformOrigin: 'center'
                 }}
             >
-                <img src={hoveredImage || ''} alt="" />
+                {hoveredImage && (
+                    <img 
+                        src={hoveredImage} 
+                        alt="Project Preview" 
+                        className="w-full h-full object-cover"
+                    />
+                )}
             </div>
         </section>
     );
@@ -223,7 +228,6 @@ const Footer = ({ isReady }) => {
     return (
         <footer ref={sectionRef} className="footer-section bg-black py-20 text-center">
             <h2 ref={headingRef} className="text-5xl font-bold mb-8">Get in Touch</h2>
-            {/* EDIT HERE: Replace these href links with your actual social media/email links. */}
             <div ref={linksRef} className="flex justify-center space-x-8">
                 <a href="mailto:contact@yourdomain.com" className="footer-link">Email</a>
                 <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener noreferrer" className="footer-link">LinkedIn</a>
