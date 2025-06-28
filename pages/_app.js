@@ -1,22 +1,7 @@
-// File: pages/_app.js
-import '../styles/globals.css';
-import { useEffect } from 'react';
-import Lenis from '@studio-freight/lenis';
+import '../styles/globals.css'
 
-export default function App({ Component, pageProps }) {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      smooth: true,
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-  }, []);
-
-  return <Component {...pageProps} />;
+function MyApp({ Component, pageProps }) {
+  return <Component {...pageProps} />
 }
+
+export default MyApp
